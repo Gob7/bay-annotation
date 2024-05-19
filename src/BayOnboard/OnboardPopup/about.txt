@@ -1,0 +1,27 @@
+OnboardPopup
+
+    HeaderContent
+        HeaderClearButton
+        HeaderUndoButton
+        HeaderSaveButton
+        HeaderCloseButton
+        
+    AnnotationContent
+        BoxBay
+        AnnotationBay
+
+    TableContent
+        TableHeadContent
+
+        TableBodyContent
+            TableBayNumber
+            TableBrandSelect
+
+            TableBodyActions
+                TableActionAnnotate
+                TableActionUndo
+                TableActionConfigure
+                TableActionDelete
+                TableActionPopover
+
+    SortContent
