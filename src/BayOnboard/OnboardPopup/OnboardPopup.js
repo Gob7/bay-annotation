@@ -107,6 +107,9 @@ function OnboardPopup() {
     console.log("saved scaled bays", scaledBoxProps);
     console.log("saved scaled Polygons", scaledSavedPolygons);
   };
+  const updateSavedPolygons = (updatedPolygons) => {
+    setSavedPolygons(updatedPolygons);
+  };
 
   // open configs menu
   const openConfigsMenu = (event, boxData) => {
@@ -164,35 +167,49 @@ function OnboardPopup() {
     setAnnotatingBayId(null);
   };
 
-  // change bay no.
   const handleInputChange = (index, field, value) => {
-    if (field === "id") {
-      const isDuplicate = boxProps.some(
-        (box, i) => i !== index && box.id === value
-      );
-
-      if (isDuplicate) {
-        alert("Two bays can't have same numbers");
-        return;
-      }
+    if (value === "") {
+      console.log("Empty value detected, no update performed.");
+      return;
     }
-    // const updatingId = boxProps[index].id
-    const updatedBoxProps = [...boxProps];
-    updatedBoxProps[index][field] = value;
-    setBoxProps(updatedBoxProps);
-    // if(!Number.isNaN(value)) {
-    //   console.log(updatingId)
-    //   setSavedPolygons(prevData =>
-    //     prevData.map((polygon) =>
-    //       polygon.bayId === updatingId ? { ...polygon, bayId: value } : polygon
-    //     )
-    //   )
-    // }
-  };
-  console.log("boxProps ", boxProps);
-  console.log("savedPolygons ", savedPolygons);
-  // change brand wrt bay
 
+    const newValue = parseInt(value, 10);
+
+    if (Number.isNaN(newValue)) {
+      console.error("Invalid value or zero value:", value);
+      return;
+    }
+
+    const currentId = boxProps[index].id;
+    console.log("Current ID:", currentId);
+
+    // Create a copy of boxProps to test the new value
+    const updatedBoxProps = [...boxProps];
+    updatedBoxProps[index] = { ...updatedBoxProps[index], [field]: newValue };
+
+    const isDuplicate = updatedBoxProps.some(
+      (box, i) => i !== index && box.id === newValue
+    );
+
+    if (isDuplicate) {
+      alert("Two bays can't have the same numbers");
+      return;
+    }
+
+    // If no duplicates, proceed to update the state
+    setBoxProps(updatedBoxProps);
+
+    setSavedPolygons((prevData) =>
+      prevData.map((polygon) =>
+        polygon.bayId === currentId ? { ...polygon, bayId: newValue } : polygon
+      )
+    );
+  };
+
+  console.log("boxProps", boxProps);
+  console.log("savedPolygons", savedPolygons);
+
+  // Change brand wrt bay
   const handleBrandChange = (id, newBrand) => {
     setBoxProps((prevBoxProps) =>
       prevBoxProps.map((item) =>
@@ -1048,13 +1065,10 @@ function OnboardPopup() {
                             <input
                               type="number"
                               value={box.id}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  index,
-                                  "id",
-                                  parseInt(e.target.value)
-                                )
-                              }
+                              onChange={(e) => {
+                                const newBayId = e.target.value; // Get the value directly as a string
+                                handleInputChange(index, "id", newBayId);
+                              }}
                               className="w-12 h-10 outline-none focus:border-blue-500 focus:border-2 text-center border rounded border-gray-400"
                             />
                           </TableCell>

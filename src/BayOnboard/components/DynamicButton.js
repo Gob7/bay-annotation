@@ -1,12 +1,6 @@
-//React packages import
 import React from "react";
 import PropTypes from "prop-types";
-
-// material-ui
 import { Tooltip } from "@mui/material";
-
-// react-icons
-// import { IconBaseProps as IconType } from "react-icons/lib";
 
 function DynamicButton({
   title,
@@ -20,19 +14,19 @@ function DynamicButton({
   let buttonColorClass;
   switch (type) {
     case "disabled":
-      buttonColorClass = "bg-slate-300 text-gray-400";
+      buttonColorClass = "bg-slate-300 text-gray-400 cursor-not-allowed";
       break;
     case "success":
       buttonColorClass =
-        "bg-emerald-500 active:bg-emerald-400 hover:bg-emerald-600 text-white";
+        "bg-gradient-to-r from-emerald-400 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white";
       break;
     case "error":
       buttonColorClass =
-        "bg-red-500 active:bg-red-400 hover:bg-red-600 text-white";
+        "bg-gradient-to-r from-red-400 to-red-500 hover:from-red-500 hover:to-red-600 text-white";
       break;
     default:
       buttonColorClass =
-        "bg-white active:bg-white hover:bg-gray-200 text-gray-600";
+        "bg-gradient-to-r from-gray-200 to-gray-300 hover:from-gray-300 hover:to-gray-400 text-gray-700";
   }
 
   let iconSizeClass;
@@ -54,13 +48,13 @@ function DynamicButton({
   }
 
   return (
-    <Tooltip title={`${toolTip}`}>
+    <Tooltip title={toolTip}>
       <button
         onClick={onClick}
-        className={`flex w-24 py-2 justify-center place-items-center rounded-md shadow-md ${buttonColorClass}`}
+        className={`flex w-28 py-2 px-3 justify-center items-center rounded-full shadow-xl transform transition-transform duration-300 ease-in-out hover:scale-105 active:scale-95 ${buttonColorClass}`}
       >
         {IconComponent && <IconComponent className={`mr-2 ${iconSizeClass}`} />}
-        <span>{title}</span>
+        <span className="font-semibold">{title}</span>
       </button>
     </Tooltip>
   );
